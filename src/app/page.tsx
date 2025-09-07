@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Combobox } from "@/components/ui/combobox";
+import { ComboboxDemo } from "@/components/ui/combobox"
 import { SimpleCombobox } from "@/components/ui/simple-combobox";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -27,16 +27,25 @@ export default function Home() {
         
         <div className="w-full max-w-sm">
           <h2 className="text-2xl font-bold mb-4">Pick your medicine</h2>
-          <SimpleCombobox 
+          {/* <SimpleCombobox 
             options={frameworks}
             value={selectedFramework}
             onValueChange={setSelectedFramework}
             placeholder="Select framework..."
             searchPlaceholder="Search medicine..."
             emptyText="No framework found."
+          /> */}
+
+          <ComboboxDemo
+            options={frameworks}
+            value={selectedFramework}
+            onValueChange={setSelectedFramework}
+            placeholder="Select framework..."
+            searchPlaceholder="Search framework..."
+            emptyText="No framework found."
           />
 
-          {/* <Combobox
+          {/* <ComboboxDemo
             options={frameworks}
             value={selectedFramework}
             onValueChange={setSelectedFramework}
