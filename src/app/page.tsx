@@ -14,13 +14,43 @@ const frameworks = [
   { value: "express.js", label: "Express.js" },
 ];
 
+const currencies = [
+  { value: "$", label: "USD ($)" },
+  { value: "€", label: "EUR (€)" },
+  { value: "£", label: "GBP (£)" },
+  { value: "¥", label: "JPY (¥)" },
+];
+
 export default function Home() {
   const [selectedFramework, setSelectedFramework] = useState<string>("");
+  const [currency, setCurrency] = useState<string>("$");
+  
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         
         <div className="w-full max-w-sm">
+          <h1 className="text-3xl font-bold mb-6 text-center">Public Good Pharma Calculator</h1>
+          
+          {/* Currency Selection */}
+          <div className="mb-6">
+            <h2 className="text-lg font-semibold mb-3">Currency and Time Basis</h2>
+            <div>
+              <label className="block text-sm font-medium mb-2">Currency</label>
+              <select 
+                value={currency} 
+                onChange={(e) => setCurrency(e.target.value)}
+                className="w-full p-2 border rounded-md"
+              >
+                {currencies.map((curr) => (
+                  <option key={curr.value} value={curr.value}>
+                    {curr.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
           <h2 className="text-2xl font-bold mb-4">Pick your medicine</h2>
 
           <ComboboxDemo
@@ -31,7 +61,6 @@ export default function Home() {
             searchPlaceholder="Search framework..."
             emptyText="No framework found."
           />
-
 
           {/* center the button  */}
           <Button className="mt-4">
