@@ -19,19 +19,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # If you use Node tooling, keep these; otherwise remove.
-      - uses: actions/setup-node@v4
+      # Install Bun
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: 20
+          bun-version: latest
 
-      # Install & build (adjust to your tool)
-      - run: bun install
-      - run: bun build
+      # Install deps & build (adjust scripts to your project)
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+      # If you’re exporting a static site (e.g. Next.js "output: 'export'"):
+      # - run: bun run export
 
-      # Tell Pages which folder to publish (replace "dist" with your output)
+      # If your static output is "out" (Next.js export) change path accordingly.
+      # For Vite/Astro it’s usually "dist".
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: ./output
+          path: ./out # or ./dist or ./output
 
   deploy:
     needs: build
