@@ -13,6 +13,11 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 
+# Run all shell steps from ./src
+defaults:
+  run:
+    working-directory: src
+
 jobs:
   build:
     runs-on: ubuntu-latest
