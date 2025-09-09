@@ -32,14 +32,9 @@ jobs:
       # Install deps & build (adjust scripts to your project)
       - run: bun install --frozen-lockfile
       - run: bun run build
-      # If you’re exporting a static site (e.g. Next.js "output: 'export'"):
-      # - run: bun run export
-
-      # If your static output is "out" (Next.js export) change path accordingly.
-      # For Vite/Astro it’s usually "dist".
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: ./out # or ./dist or ./output
+          path: ../out # or ./dist or ./output
 
   deploy:
     needs: build
