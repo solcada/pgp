@@ -29,6 +29,9 @@ jobs:
         with:
           bun-version: latest
 
+      - name: Set BASE_PATH
+        run: echo "GITHUB_REPOSITORY=$GITHUB_REPOSITORY" >> $GITHUB_ENV
+
       # Install deps & build (adjust scripts to your project)      
       - run: bun install --frozen-lockfile
       - run: bun run build
