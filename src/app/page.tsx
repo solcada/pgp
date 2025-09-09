@@ -24,6 +24,7 @@ const currencies = [
 export default function Home() {
   const [selectedFramework, setSelectedFramework] = useState<string>("");
   const [currency, setCurrency] = useState<string>("$");
+  const [costBasis, setCostBasis] = useState<string>("per-year");
   
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
@@ -35,19 +36,32 @@ export default function Home() {
           {/* Currency Selection */}
           <div className="mb-6">
             <h2 className="text-lg font-semibold mb-3">Currency and Time Basis</h2>
-            <div>
-              <label className="block text-sm font-medium mb-2">Currency</label>
-              <select 
-                value={currency} 
-                onChange={(e) => setCurrency(e.target.value)}
-                className="w-full p-2 border rounded-md"
-              >
-                {currencies.map((curr) => (
-                  <option key={curr.value} value={curr.value}>
-                    {curr.label}
-                  </option>
-                ))}
-              </select>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">Currency</label>
+                <select 
+                  value={currency} 
+                  onChange={(e) => setCurrency(e.target.value)}
+                  className="w-32 p-2 border rounded-md"
+                >
+                  {currencies.map((curr) => (
+                    <option key={curr.value} value={curr.value}>
+                      {curr.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Cost basis</label>
+                <select 
+                  value={costBasis} 
+                  onChange={(e) => setCostBasis(e.target.value)}
+                  className="w-48 p-2 border rounded-md"
+                >
+                  <option value="per-year">Per patient per year</option>
+                  <option value="per-month">Per patient per month</option>
+                </select>
+              </div>
             </div>
           </div>
 
