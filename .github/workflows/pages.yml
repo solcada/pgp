@@ -32,10 +32,10 @@ jobs:
       # Install deps & build (adjust scripts to your project)      
       - run: bun install --frozen-lockfile
       - run: bun run build
-      - run: ls -la .. && echo "--- out ---" && ls -la ./src/out
+      - run: ls -la .. && echo "--- out ---" && ls -la out
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: ./out # or ./dist or ./output
+          path: out
 
   deploy:
     needs: build
