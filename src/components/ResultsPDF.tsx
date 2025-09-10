@@ -39,40 +39,64 @@ const styles = StyleSheet.create({
   },
 });
 
+interface ResultsPDFProps {
+  data?: {
+    currency?: string;
+    expensiveDrugCost?: number | string;
+    alternativeDrugCost?: number | string;
+    membersInHealthPlan?: number | string;
+    enrollmentRate?: number | string;
+    trialEnrollmentRate?: number | string;
+    perEnrolleePriceToPayer?: number | string;
+    postTrialAdoption?: number | string;
+    probabilityOfTrialSuccess?: number | string;
+    trialDuration?: number | string;
+    postTrialHorizon?: number | string;
+    discountRateForNPV?: number | string;
+    optionalProgramFeeToPayer?: number | string;
+    inStudyTotalSavings?: number | string;
+    inStudyPerEnrolleeSavings?: number | string;
+    expectedPostTrialSavings?: number | string;
+    totalSavings?: number | string;
+    savingsMultiple?: number | string;
+    roi?: number | string;
+  };
+}
+
 // PDF Document Component
-export const ResultsPDF = () => (
+export const ResultsPDF: React.FC<ResultsPDFProps> = ({ data = {} }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <Text style={styles.title}>Public Good Pharma Calculator - Results</Text>
       
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>In-Study Savings (during trial)</Text>
-        <Text style={styles.text}>Shows total and per-enrollee</Text>
+        <Text style={styles.sectionTitle}>In-Study Savings</Text>
+        <Text style={styles.text}>Total Savings: ${data.inStudyTotalSavings || '0'}</Text>
+        <Text style={styles.text}>Per Enrollee: ${data.inStudyPerEnrolleeSavings || '0'}</Text>
       </View>
       
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Expected Post-Trial Savings</Text>
-        <Text style={styles.text}>Success-weighted over horizon</Text>
+        <Text style={styles.text}>Success-weighted over horizon: ${data.expectedPostTrialSavings || '0'}</Text>
       </View>
       
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Total Savings</Text>
-        <Text style={styles.text}>In-study + expected post-trial</Text>
-        <Text style={styles.text}>Savings Multiple / ROI</Text>
+        <Text style={styles.text}>In-study + Post-trial: ${data.totalSavings || '0'}</Text>
       </View>
       
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>ROI Analysis</Text>
-        <Text style={styles.text}>If Program fee &gt; 0, show ROI = Total savings ÷ Program fee.</Text>
-        <Text style={styles.text}>Also show simple "in-study multiple" and "post-trial multiple" if helpful.</Text>
+        <Text style={styles.sectionTitle}>Savings Multiple / ROI</Text>
+        <Text style={styles.text}>Savings Multiple: {data.savingsMultiple || '0'}x</Text>
+        <Text style={styles.text}>ROI: {data.roi || '0'}%</Text>
       </View>
       
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Key Drivers</Text>
-        <Text style={styles.text}>• Enrollment %</Text>
-        <Text style={styles.text}>• % price during study</Text>
-        <Text style={styles.text}>• Adoption %</Text>
-        <Text style={styles.text}>• Success %</Text>
+        <Text style={styles.text}>• Enrollment: {data.enrollmentRate || '0'}%</Text>
+        <Text style={styles.text}>• Price during study: {data.perEnrolleePriceToPayer || '0'}%</Text>
+        <Text style={styles.text}>• Adoption: {data.postTrialAdoption || '0'}%</Text>
+        <Text style={styles.text}>• Success: {data.probabilityOfTrialSuccess || '0'}%</Text>
       </View>
 
       <Text style={styles.footer}>

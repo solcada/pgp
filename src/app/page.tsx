@@ -1,64 +1,108 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const currencies = [
   { value: "$", label: "USD ($)" },
 ];
 
 export default function Home() {
+  const resultsColumnRef = useRef<HTMLDivElement>(null);
+  
   const downloadResults = async () => {
-    try {
-      // Dynamic imports to avoid SSR issues
-      const { pdf } = await import('@react-pdf/renderer');
-      const { ResultsPDF } = await import('@/components/ResultsPDF');
-      
-      const blob = await pdf(<ResultsPDF />).toBlob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'pharma-calculator-results.pdf';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error('PDF generation failed:', error);
-      // Fallback to text export
-      const content = `PUBLIC GOOD PHARMA CALCULATOR - RESULTS
+    if (resultsColumnRef.current) {
+      try {
+        // Dynamic import to avoid SSR issues
+        const html2pdf = (await import('html2pdf.js')).default;
+        
+        // Create a clone of the element to avoid modifying the original
+        const element = resultsColumnRef.current.cloneNode(true) as HTMLElement;
+        
+        // Add CSS overrides to handle unsupported color functions
+        const style = document.createElement('style');
+        style.textContent = `
+          * {
+            color: rgb(0, 0, 0) !important;
+            background-color: rgb(255, 255, 255) !important;
+            border-color: rgb(229, 231, 235) !important;
+          }
+          .bg-gray-50 {
+            background-color: rgb(249, 250, 251) !important;
+          }
+          .text-gray-600 {
+            color: rgb(75, 85, 99) !important;
+          }
+          .bg-blue-600 {
+            background-color: rgb(37, 99, 235) !important;
+          }
+          .text-white {
+            color: rgb(255, 255, 255) !important;
+          }
+          .border {
+            border-color: rgb(229, 231, 235) !important;
+          }
+        `;
+        element.appendChild(style);
+        
+        const options = {
+          margin: 0.5,
+          filename: 'pharma-calculator-results.pdf',
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { 
+            scale: 2,
+            useCORS: true,
+            letterRendering: true,
+            backgroundColor: '#ffffff'
+          },
+          jsPDF: { 
+            unit: 'in', 
+            format: 'letter', 
+            orientation: 'portrait' 
+          }
+        };
+        
+        // Export the cloned element with CSS overrides
+        html2pdf().set(options).from(element).save();
+        
+      } catch (error) {
+        console.error('PDF generation failed:', error);
+        
+        // Fallback to text export with actual values
+        const content = `PUBLIC GOOD PHARMA CALCULATOR - RESULTS
 ===========================================
 
-IN-STUDY SAVINGS (DURING TRIAL)
-- Shows total and per-enrollee
+IN-STUDY SAVINGS
+- Total Savings: $${inStudyTotalSavings || '0'}
+- Per Enrollee: $${inStudyPerEnrolleeSavings || '0'}
 
 EXPECTED POST-TRIAL SAVINGS
-- Success-weighted over horizon
+- Success-weighted over horizon: $${expectedPostTrialSavings || '0'}
 
 TOTAL SAVINGS
-- In-study + expected post-trial
-- Savings Multiple / ROI
+- In-study + Post-trial: $${totalSavings || '0'}
 
-ROI ANALYSIS
-- If Program fee > 0, show ROI = Total savings ÷ Program fee
-- Also show simple "in-study multiple" and "post-trial multiple" if helpful
+SAVINGS MULTIPLE / ROI
+- Savings Multiple: ${savingsMultiple || '0'}x
+- ROI: ${roi || '0'}%
 
 KEY DRIVERS
-- Enrollment %
-- % price during study
-- Adoption %
-- Success %
+- Enrollment: ${enrollmentRate || '0'}%
+- Price during study: ${perEnrolleePriceToPayer || '0'}%
+- Adoption: ${postTrialAdoption || '0'}%
+- Success: ${probabilityOfTrialSuccess || '0'}%
 
 Generated on: ${new Date().toLocaleDateString()}`;
-      
-      const blob = new Blob([content], { type: 'text/plain' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'pharma-calculator-results.txt';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+        
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'pharma-calculator-results.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
     }
   };
 
@@ -326,7 +370,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
           </div>
 
           {/* Results Column */}
-          <div className="w-full max-w-md bg-gray-50 p-6 rounded-lg">
+          <div  className="w-full max-w-md bg-gray-50 p-6 rounded-lg">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-2xl font-bold">Results</h2>
               <button 
@@ -336,7 +380,7 @@ Generated on: ${new Date().toLocaleDateString()}`;
                 Export Results
               </button>
             </div>
-            <div className="space-y-4">
+            <div ref={resultsColumnRef} className="space-y-4">
               <div className="p-3 bg-white rounded border">
                 <p className="text-sm text-gray-600"></p>
 
