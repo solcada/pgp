@@ -16,6 +16,15 @@ export default function Home() {
   const [alternativeDrugCost, setAlternativeDrugCost] = useState<number>(0);
   const [alternativeCostBasis, setAlternativeCostBasis] = useState<string>("per-year");
   const [membersInHealthPlan, setMembersInHealthPlan] = useState<number>(0);
+  const [enrollmentRate, setEnrollmentRate] = useState<number>(0);
+  const [trialEnrollmentRate, setTrialEnrollmentRate] = useState<number>(0);
+  const [perEnrolleePriceToPayer, setPerEnrolleePriceToPayer] = useState<number>(0);
+  const [postTrialAdoption, setPostTrialAdoption] = useState<number>(0);
+  const [probabilityOfTrialSuccess, setProbabilityOfTrialSuccess] = useState<number>(0);
+  const [trialDuration, setTrialDuration] = useState<number>(0);
+  const [postTrialHorizon, setPostTrialHorizon] = useState<number>(0);
+  const [discountRateForNPV, setDiscountRateForNPV] = useState<number>(0);
+  const [optionalProgramFeeToPayer, setOptionalProgramFeeToPayer] = useState<number>(0);
 
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
@@ -111,8 +120,8 @@ export default function Home() {
           </div>
 
           {/* Population */}
-
-          {/* <h2 className="text-2xl font-bold mb-4">Pick your medicine</h2> */}
+          <div className="mb-6">
+            <h2 className="text-lg font-semibold mb-3">Population</h2>
 
           <div>
             <label className="block text-sm font-medium mb-2">
@@ -127,32 +136,146 @@ export default function Home() {
             />
           </div>
 
-          <h2>Enrolment rate in study from members in health plan 0-100%</h2> Number percentage.
-          <div>IVP Trial</div>
+          <div className="mb-6">
+            <label className="block text-sm font-medium mb-2">
+              Enrollment rate in study from members in health plan (0-100%)
+            </label>
+            <input
+              type="number"
+              min="0"
+              max="100"
+              value={enrollmentRate}
+              onChange={(e) => setEnrollmentRate(Number(e.target.value))}
+              className="w-full p-2 border rounded-md"
+              placeholder="Enter percentage (0-100)"
+            />
+          </div>
+          </div>
 
-          <h1>Trial Pricing Enrolment</h1>
-          <h2>Enrolment Rate</h2>          
-          <h2>Per-enrollee price to payer (as % of expensive drug cost): slider 70–95%  </h2>
+          {/* Trial pricing and enrolment */}
+          <div className="mb-6">
+          <h2 className="text-lg font-semibold mb-3">Trial pricing and enrolment</h2>
+          </div>
 
-          <h1>Outcomes and Adoption</h1>
-          <h2>Post-trial adoption</h2>
-          <h2>Probability of trial success</h2>
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Per-enrollee price to payer (as % of expensive drug cost) (70-95%)
+            </label>
+            <input
+              type="number"
+              min="70"
+              max="95"
+              value={perEnrolleePriceToPayer}
+              onChange={(e) => setPerEnrolleePriceToPayer(Number(e.target.value))}
+              className="w-full p-2 border rounded-md"
+              placeholder="Enter percentage (70-95)"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Enrollment Rate (0-100%)
+            </label>
+            <input
+              type="number"
+              min="0"
+              max="100"
+              value={trialEnrollmentRate}
+              onChange={(e) => setTrialEnrollmentRate(Number(e.target.value))}
+              className="w-full p-2 border rounded-md"
+              placeholder="Enter percentage (0-100)"
+            />
+          </div>          
 
-          <h1>Timing and finance</h1>
-          <h2>Trial duration</h2>
-          <h2>Post-trial horizon</h2>
-          <h2>Discount rate for NPV</h2>
-          <h2>Optional program fee to payer</h2>
+          <div className="mb-6">
+          <h2 className="text-lg font-semibold mb-3">Outcomes and Adoption</h2>
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Post-trial adoption (0-100%)
+            </label>
+            <input
+              type="number"
+              min="0"
+              max="100"
+              value={postTrialAdoption}
+              onChange={(e) => setPostTrialAdoption(Number(e.target.value))}
+              className="w-full p-2 border rounded-md"
+              placeholder="Enter percentage (0-100)"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Probability of trial success (0-100%)
+            </label>
+            <input
+              type="number"
+              min="0"
+              max="100"
+              value={probabilityOfTrialSuccess}
+              onChange={(e) => setProbabilityOfTrialSuccess(Number(e.target.value))}
+              className="w-full p-2 border rounded-md"
+              placeholder="Enter percentage (0-100)"
+            />
+          </div>
 
-
-          {/* <ComboboxDemo
-            options={frameworks}
-            value={selectedFramework}
-            onValueChange={setSelectedFramework}
-            placeholder="Select framework..."
-            searchPlaceholder="Search framework..."
-            emptyText="No framework found."
-          /> */}
+          <div className="mb-6">
+          <h2 className="text-lg font-semibold mb-3">Timing and finance</h2>
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Trial duration (months)
+            </label>
+            <input
+              type="number"
+              min="1"
+              value={trialDuration}
+              onChange={(e) => setTrialDuration(Number(e.target.value))}
+              className="w-full p-2 border rounded-md"
+              placeholder="Enter duration in months"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Post-trial horizon (months)
+            </label>
+            <input
+              type="number"
+              min="1"
+              value={postTrialHorizon}
+              onChange={(e) => setPostTrialHorizon(Number(e.target.value))}
+              className="w-full p-2 border rounded-md"
+              placeholder="Enter horizon in months"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Discount rate for NPV (%)
+            </label>
+            <input
+              type="number"
+              min="0"
+              max="100"
+              step="0.1"
+              value={discountRateForNPV}
+              onChange={(e) => setDiscountRateForNPV(Number(e.target.value))}
+              className="w-full p-2 border rounded-md"
+              placeholder="Enter discount rate percentage"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Optional program fee to payer
+            </label>
+            <input
+              type="number"
+              min="0"
+              value={optionalProgramFeeToPayer}
+              onChange={(e) => setOptionalProgramFeeToPayer(Number(e.target.value))}
+              className="w-full p-2 border rounded-md"
+              placeholder="Enter program fee amount"
+            />
+          </div>
 
           {/* center the button  */}
           <Button className="mt-4">
