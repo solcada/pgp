@@ -12,19 +12,19 @@ export default function Home() {
   const [currency, setCurrency] = useState<string>("$");
   const [costBasis, setCostBasis] = useState<string>("per-year");
   const [specialtyCostBasis, setSpecialtyCostBasis] = useState<string>("per-year");
-  const [expensiveDrugCost, setExpensiveDrugCost] = useState<number>(0);
-  const [alternativeDrugCost, setAlternativeDrugCost] = useState<number>(0);
+  const [expensiveDrugCost, setExpensiveDrugCost] = useState<number | ''>('');
+  const [alternativeDrugCost, setAlternativeDrugCost] = useState<number | ''>('');
   const [alternativeCostBasis, setAlternativeCostBasis] = useState<string>("per-year");
-  const [membersInHealthPlan, setMembersInHealthPlan] = useState<number>(0);
-  const [enrollmentRate, setEnrollmentRate] = useState<number>(0);
-  const [trialEnrollmentRate, setTrialEnrollmentRate] = useState<number>(0);
-  const [perEnrolleePriceToPayer, setPerEnrolleePriceToPayer] = useState<number>(0);
-  const [postTrialAdoption, setPostTrialAdoption] = useState<number>(0);
-  const [probabilityOfTrialSuccess, setProbabilityOfTrialSuccess] = useState<number>(0);
-  const [trialDuration, setTrialDuration] = useState<number>(0);
-  const [postTrialHorizon, setPostTrialHorizon] = useState<number>(0);
-  const [discountRateForNPV, setDiscountRateForNPV] = useState<number>(0);
-  const [optionalProgramFeeToPayer, setOptionalProgramFeeToPayer] = useState<number>(0);
+  const [membersInHealthPlan, setMembersInHealthPlan] = useState<number | ''>('');
+  const [enrollmentRate, setEnrollmentRate] = useState<number | ''>('');
+  const [trialEnrollmentRate, setTrialEnrollmentRate] = useState<number | ''>('');
+  const [perEnrolleePriceToPayer, setPerEnrolleePriceToPayer] = useState<number | ''>('');
+  const [postTrialAdoption, setPostTrialAdoption] = useState<number | ''>('');
+  const [probabilityOfTrialSuccess, setProbabilityOfTrialSuccess] = useState<number | ''>('');
+  const [trialDuration, setTrialDuration] = useState<number | ''>('');
+  const [postTrialHorizon, setPostTrialHorizon] = useState<number | ''>('');
+  const [discountRateForNPV, setDiscountRateForNPV] = useState<number | ''>('');
+  const [optionalProgramFeeToPayer, setOptionalProgramFeeToPayer] = useState<number | ''>('');
 
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
@@ -76,7 +76,7 @@ export default function Home() {
               <input
                 type="number"
                 value={expensiveDrugCost}
-                onChange={(e) => setExpensiveDrugCost(Number(e.target.value))}
+                onChange={(e) => setExpensiveDrugCost(e.target.value === '' ? '' : Number(e.target.value))}
                 className="w-full p-2 border rounded-md"
                 placeholder="Enter cost"
               />
@@ -100,7 +100,7 @@ export default function Home() {
               <input
                 type="number"
                 value={alternativeDrugCost}
-                onChange={(e) => setAlternativeDrugCost(Number(e.target.value))}
+                onChange={(e) => setAlternativeDrugCost(e.target.value === '' ? '' : Number(e.target.value))}
                 className="w-full p-2 border rounded-md"
                 placeholder="Enter cost"
               />
@@ -130,7 +130,7 @@ export default function Home() {
             <input
               type="number"
               value={membersInHealthPlan}
-              onChange={(e) => setMembersInHealthPlan(Number(e.target.value))}
+              onChange={(e) => setMembersInHealthPlan(e.target.value === '' ? '' : Number(e.target.value))}
               className="w-full p-2 border rounded-md"
               placeholder="Enter number of members"
             />
@@ -145,7 +145,7 @@ export default function Home() {
               min="0"
               max="100"
               value={enrollmentRate}
-              onChange={(e) => setEnrollmentRate(Number(e.target.value))}
+              onChange={(e) => setEnrollmentRate(e.target.value === '' ? '' : Number(e.target.value))}
               className="w-full p-2 border rounded-md"
               placeholder="Enter percentage (0-100)"
             />
@@ -166,7 +166,7 @@ export default function Home() {
               min="70"
               max="95"
               value={perEnrolleePriceToPayer}
-              onChange={(e) => setPerEnrolleePriceToPayer(Number(e.target.value))}
+              onChange={(e) => setPerEnrolleePriceToPayer(e.target.value === '' ? '' : Number(e.target.value))}
               className="w-full p-2 border rounded-md"
               placeholder="Enter percentage (70-95)"
             />
@@ -180,7 +180,7 @@ export default function Home() {
               min="0"
               max="100"
               value={trialEnrollmentRate}
-              onChange={(e) => setTrialEnrollmentRate(Number(e.target.value))}
+              onChange={(e) => setTrialEnrollmentRate(e.target.value === '' ? '' : Number(e.target.value))}
               className="w-full p-2 border rounded-md"
               placeholder="Enter percentage (0-100)"
             />
@@ -199,7 +199,7 @@ export default function Home() {
               min="0"
               max="100"
               value={postTrialAdoption}
-              onChange={(e) => setPostTrialAdoption(Number(e.target.value))}
+              onChange={(e) => setPostTrialAdoption(e.target.value === '' ? '' : Number(e.target.value))}
               className="w-full p-2 border rounded-md"
               placeholder="Enter percentage (0-100)"
             />
@@ -213,7 +213,7 @@ export default function Home() {
               min="0"
               max="100"
               value={probabilityOfTrialSuccess}
-              onChange={(e) => setProbabilityOfTrialSuccess(Number(e.target.value))}
+              onChange={(e) => setProbabilityOfTrialSuccess(e.target.value === '' ? '' : Number(e.target.value))}
               className="w-full p-2 border rounded-md"
               placeholder="Enter percentage (0-100)"
             />
@@ -230,7 +230,7 @@ export default function Home() {
               type="number"
               min="1"
               value={trialDuration}
-              onChange={(e) => setTrialDuration(Number(e.target.value))}
+              onChange={(e) => setTrialDuration(e.target.value === '' ? '' : Number(e.target.value))}
               className="w-full p-2 border rounded-md"
               placeholder="Enter duration in months"
             />
@@ -243,7 +243,7 @@ export default function Home() {
               type="number"
               min="1"
               value={postTrialHorizon}
-              onChange={(e) => setPostTrialHorizon(Number(e.target.value))}
+              onChange={(e) => setPostTrialHorizon(e.target.value === '' ? '' : Number(e.target.value))}
               className="w-full p-2 border rounded-md"
               placeholder="Enter horizon in months"
             />
@@ -258,7 +258,7 @@ export default function Home() {
               max="100"
               step="0.1"
               value={discountRateForNPV}
-              onChange={(e) => setDiscountRateForNPV(Number(e.target.value))}
+              onChange={(e) => setDiscountRateForNPV(e.target.value === '' ? '' : Number(e.target.value))}
               className="w-full p-2 border rounded-md"
               placeholder="Enter discount rate percentage"
             />
@@ -271,16 +271,11 @@ export default function Home() {
               type="number"
               min="0"
               value={optionalProgramFeeToPayer}
-              onChange={(e) => setOptionalProgramFeeToPayer(Number(e.target.value))}
+              onChange={(e) => setOptionalProgramFeeToPayer(e.target.value === '' ? '' : Number(e.target.value))}
               className="w-full p-2 border rounded-md"
               placeholder="Enter program fee amount"
             />
           </div>
-
-          {/* center the button  */}
-          <Button className="mt-4">
-            Submit
-          </Button>
 
           {/* <div className="mt-4 p-2 bg-gray-100 rounded">
             <p>Selected: {selectedFramework || "Nothing selected"}</p>
