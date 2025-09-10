@@ -35,7 +35,7 @@ jobs:
       - run: ls -la .. && echo "--- out ---" && ls -la ./src/out
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: ./src/out # or ./dist or ./output
+          path: ./out # or ./dist or ./output
 
   deploy:
     needs: build
