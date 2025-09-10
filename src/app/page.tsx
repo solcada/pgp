@@ -7,8 +7,25 @@ const currencies = [
 ];
 
 export default function Home() {
-  const downloadResults = () => {
-    const content = `PUBLIC GOOD PHARMA CALCULATOR - RESULTS
+  const downloadResults = async () => {
+    try {
+      // Dynamic imports to avoid SSR issues
+      const { pdf } = await import('@react-pdf/renderer');
+      const { ResultsPDF } = await import('@/components/ResultsPDF');
+      
+      const blob = await pdf(<ResultsPDF />).toBlob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'pharma-calculator-results.pdf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('PDF generation failed:', error);
+      // Fallback to text export
+      const content = `PUBLIC GOOD PHARMA CALCULATOR - RESULTS
 ===========================================
 
 IN-STUDY SAVINGS (DURING TRIAL)
@@ -33,15 +50,16 @@ KEY DRIVERS
 
 Generated on: ${new Date().toLocaleDateString()}`;
       
-    const blob = new Blob([content], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'pharma-calculator-results.txt';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'pharma-calculator-results.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
   };
 
   const [currency, setCurrency] = useState<string>("$");

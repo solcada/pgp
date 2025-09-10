@@ -6,7 +6,6 @@
    - Expensive drug cost (per pt/yr or pm): number  
    - Lower-cost option (per pt/yr or pm): number  
      - *“Enter lower-cost price”*  
-     - If dose reduction is used, compute lower-cost = expensive × (1 − dose%)
 
 3. **Population**
    - Patients currently on expensive drug: integer
