@@ -13,7 +13,9 @@ export default function Home() {
   const [costBasis, setCostBasis] = useState<string>("per-year");
   const [specialtyCostBasis, setSpecialtyCostBasis] = useState<string>("per-year");
   const [expensiveDrugCost, setExpensiveDrugCost] = useState<number>(0);
-  const [expensiveAlternativeDrugCost, setExpensiveAlternativeDrugCost] = useState<number>(0);
+  const [alternativeDrugCost, setAlternativeDrugCost] = useState<number>(0);
+  const [alternativeCostBasis, setAlternativeCostBasis] = useState<string>("per-year");
+  const [membersInHealthPlan, setMembersInHealthPlan] = useState<number>(0);
 
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
@@ -88,8 +90,8 @@ export default function Home() {
               </label>
               <input
                 type="number"
-                value={expensiveAlternativeDrugCost}
-                onChange={(e) => setExpensiveAlternativeDrugCost(Number(e.target.value))}
+                value={alternativeDrugCost}
+                onChange={(e) => setAlternativeDrugCost(Number(e.target.value))}
                 className="w-full p-2 border rounded-md"
                 placeholder="Enter cost"
               />
@@ -98,8 +100,8 @@ export default function Home() {
              <div>
                 <label className="block text-sm font-medium mb-2">Cost basis</label>
                 <select 
-                  value={costBasis} 
-                  onChange={(e) => setCostBasis(e.target.value)}
+                  value={alternativeCostBasis} 
+                  onChange={(e) => setAlternativeCostBasis(e.target.value)}
                   className="w-52 p-2 border rounded-md"
                 >
                   <option value="per-year">per year</option>
@@ -112,14 +114,18 @@ export default function Home() {
 
           {/* <h2 className="text-2xl font-bold mb-4">Pick your medicine</h2> */}
 
-          <div>Members in health plan taking speciality drug per annum</div>
-              <input
-                type="number"
-                value={expensiveDrugCost}
-                onChange={(e) => setExpensiveDrugCost(Number(e.target.value))}
-                className="w-full p-2 border rounded-md"
-                placeholder="Enter cost"
-              />
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Members in health plan taking specialty drug per annum
+            </label>
+            <input
+              type="number"
+              value={membersInHealthPlan}
+              onChange={(e) => setMembersInHealthPlan(Number(e.target.value))}
+              className="w-full p-2 border rounded-md"
+              placeholder="Enter number of members"
+            />
+          </div>
 
           <h2>Enrolment rate in study from members in health plan 0-100%</h2> Number percentage.
           <div>IVP Trial</div>
