@@ -78,6 +78,12 @@ Generated on: ${new Date().toLocaleDateString()}`;
   const [postTrialHorizon, setPostTrialHorizon] = useState<number | ''>('');
   const [discountRateForNPV, setDiscountRateForNPV] = useState<number | ''>('');
   const [optionalProgramFeeToPayer, setOptionalProgramFeeToPayer] = useState<number | ''>('');
+  const [inStudyTotalSavings, setInStudyTotalSavings] = useState<number | ''>('');
+  const [inStudyPerEnrolleeSavings, setInStudyPerEnrolleeSavings] = useState<number | ''>('');
+  const [expectedPostTrialSavings, setExpectedPostTrialSavings] = useState<number | ''>('');
+  const [totalSavings, setTotalSavings] = useState<number | ''>('');
+  const [savingsMultiple, setSavingsMultiple] = useState<number | ''>('');
+  const [roi, setRoi] = useState<number | ''>('');
 
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-4 pb-8 gap-8 sm:p-8">
@@ -332,24 +338,79 @@ Generated on: ${new Date().toLocaleDateString()}`;
             </div>
             <div className="space-y-4">
               <div className="p-3 bg-white rounded border">
-                <p className="text-sm text-gray-600">Calculations will appear here when you enter values</p>
+                <p className="text-sm text-gray-600"></p>
 
-                
+              <div className="mb-4">
+                <h3 className="font-semibold text-base mb-3">In-Study Savings</h3>
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Total Savings:</span>
+                    <span className="text-sm font-medium">${inStudyTotalSavings || '0'}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Per Enrollee:</span>
+                    <span className="text-sm font-medium">${inStudyPerEnrolleeSavings || '0'}</span>
+                  </div>
+                </div>
+              </div>
 
-              <p className="text-sm text-gray-600">In-Study Savings (during trial)
-                    shows total and per-enrollee
-                    
-                    Expected Post-Trial Savings
-                    success-weighted over horizon
-                    
-                    Total Savings = in-study + expected post-trial
-                    Savings Multiple / ROI
-                    
-                    If Program fee &gt; 0, show ROI = Total savings ÷ Program fee.
-                    Also show simple “in-study multiple” and “post-trial multiple” if helpful.
-                    
-                    Key drivers (mini list): enrollment %, % price during study, adoption %, success %.
-                    Download PDF button with inputs + results.</p>
+              <div className="mb-4">
+                <h3 className="font-semibold text-base mb-3">Expected Post-Trial Savings</h3>
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Success-weighted over horizon:</span>
+                    <span className="text-sm font-medium">${expectedPostTrialSavings || '0'}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mb-4">
+                <h3 className="font-semibold text-base mb-3">Total Savings</h3>
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">In-study + Post-trial:</span>
+                    <span className="text-sm font-medium">${totalSavings || '0'}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mb-4">
+                <h3 className="font-semibold text-base mb-3">Savings Multiple / ROI</h3>
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Savings Multiple:</span>
+                    <span className="text-sm font-medium">{savingsMultiple || '0'}x</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">ROI:</span>
+                    <span className="text-sm font-medium">{roi || '0'}%</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mb-4">
+                <h3 className="font-semibold text-base mb-3">Key Drivers</h3>
+                <div className="space-y-1">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Enrollment:</span>
+                    <span className="text-sm font-medium">{enrollmentRate || '0'}%</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Price during study:</span>
+                    <span className="text-sm font-medium">{perEnrolleePriceToPayer || '0'}%</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Adoption:</span>
+                    <span className="text-sm font-medium">{postTrialAdoption || '0'}%</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Success:</span>
+                    <span className="text-sm font-medium">{probabilityOfTrialSuccess || '0'}%</span>
+                  </div>
+                </div>
+              </div>
+
+ 
               </div>
 
             </div>
