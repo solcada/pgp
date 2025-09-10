@@ -1,7 +1,5 @@
 "use client";
 
-import { ComboboxDemo } from "@/components/ui/combobox"
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 const currencies = [
@@ -9,6 +7,43 @@ const currencies = [
 ];
 
 export default function Home() {
+  const downloadResults = () => {
+    const content = `PUBLIC GOOD PHARMA CALCULATOR - RESULTS
+===========================================
+
+IN-STUDY SAVINGS (DURING TRIAL)
+- Shows total and per-enrollee
+
+EXPECTED POST-TRIAL SAVINGS
+- Success-weighted over horizon
+
+TOTAL SAVINGS
+- In-study + expected post-trial
+- Savings Multiple / ROI
+
+ROI ANALYSIS
+- If Program fee > 0, show ROI = Total savings ÷ Program fee
+- Also show simple "in-study multiple" and "post-trial multiple" if helpful
+
+KEY DRIVERS
+- Enrollment %
+- % price during study
+- Adoption %
+- Success %
+
+Generated on: ${new Date().toLocaleDateString()}`;
+      
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'pharma-calculator-results.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   const [currency, setCurrency] = useState<string>("$");
   const [costBasis, setCostBasis] = useState<string>("per-year");
   const [specialtyCostBasis, setSpecialtyCostBasis] = useState<string>("per-year");
@@ -287,14 +322,35 @@ export default function Home() {
 
           {/* Results Column */}
           <div className="w-full max-w-md bg-gray-50 p-6 rounded-lg">
-            <h2 className="text-2xl font-bold mb-4">Results</h2>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold">Results</h2>
+              <button 
+                onClick={downloadResults}
+                className="bg-blue-600 text-white px-3 py-1.5 rounded text-sm hover:bg-blue-700"
+              >
+                Export Results
+              </button>
+            </div>
             <div className="space-y-4">
               <div className="p-3 bg-white rounded border">
                 <p className="text-sm text-gray-600">Calculations will appear here when you enter values</p>
+
+              <p className="text-sm text-gray-600">In-Study Savings (during trial)
+                    shows total and per-enrollee
+                    
+                    Expected Post-Trial Savings
+                    success-weighted over horizon
+                    
+                    Total Savings = in-study + expected post-trial
+                    Savings Multiple / ROI
+                    
+                    If Program fee &gt; 0, show ROI = Total savings ÷ Program fee.
+                    Also show simple “in-study multiple” and “post-trial multiple” if helpful.
+                    
+                    Key drivers (mini list): enrollment %, % price during study, adoption %, success %.
+                    Download PDF button with inputs + results.</p>
               </div>
 
-
-              
             </div>
           </div>
 
