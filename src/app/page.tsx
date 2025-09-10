@@ -27,10 +27,11 @@ export default function Home() {
   const [optionalProgramFeeToPayer, setOptionalProgramFeeToPayer] = useState<number | ''>('');
 
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
+    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-4 pb-8 gap-8 sm:p-8">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         
-        <div className="w-full max-w-sm">
+        <div className="flex gap-8 w-full max-w-7xl">
+          <div className="w-full max-w-lg">
           <h1 className="text-3xl font-bold mb-6 text-center">Public Good Pharma Calculator</h1>
           
           {/* Currency Selection */}
@@ -69,54 +70,55 @@ export default function Home() {
           {/* Drug Costs */}
           <div className="mb-6">
             <h2 className="text-lg font-semibold mb-3">Drug Costs</h2>
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                Specialty drug cost
-              </label>
-              <input
-                type="number"
-                value={expensiveDrugCost}
-                onChange={(e) => setExpensiveDrugCost(e.target.value === '' ? '' : Number(e.target.value))}
-                className="w-full p-2 border rounded-md"
-                placeholder="Enter cost"
-              />
-            </div>
-
-            <div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Specialty drug cost
+                </label>
+                <input
+                  type="number"
+                  value={expensiveDrugCost}
+                  onChange={(e) => setExpensiveDrugCost(e.target.value === '' ? '' : Number(e.target.value))}
+                  className="w-full p-2 border rounded-md"
+                  placeholder="Enter cost"
+                />
+              </div>
+              <div>
                 <label className="block text-sm font-medium mb-2">Cost basis</label>
                 <select 
                   value={specialtyCostBasis} 
                   onChange={(e) => setSpecialtyCostBasis(e.target.value)}
-                  className="w-52 p-2 border rounded-md">
+                  className="w-full p-2 border rounded-md">
                   <option value="per-year">per year</option>
                   <option value="per-month">per month</option>
                 </select>
               </div>
-            <div>
-
-            <label className="block text-sm font-medium mb-2">
-                Alternative drug
-              </label>
-              <input
-                type="number"
-                value={alternativeDrugCost}
-                onChange={(e) => setAlternativeDrugCost(e.target.value === '' ? '' : Number(e.target.value))}
-                className="w-full p-2 border rounded-md"
-                placeholder="Enter cost"
-              />
             </div>
-
-             <div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Alternative drug
+                </label>
+                <input
+                  type="number"
+                  value={alternativeDrugCost}
+                  onChange={(e) => setAlternativeDrugCost(e.target.value === '' ? '' : Number(e.target.value))}
+                  className="w-full p-2 border rounded-md"
+                  placeholder="Enter cost"
+                />
+              </div>
+              <div>
                 <label className="block text-sm font-medium mb-2">Cost basis</label>
                 <select 
                   value={alternativeCostBasis} 
                   onChange={(e) => setAlternativeCostBasis(e.target.value)}
-                  className="w-52 p-2 border rounded-md"
+                  className="w-full p-2 border rounded-md"
                 >
                   <option value="per-year">per year</option>
                   <option value="per-month">per month</option>
                 </select>
               </div>
+            </div>
           </div>
 
           {/* Population */}
@@ -186,7 +188,7 @@ export default function Home() {
             />
           </div>          
 
-          <div className="mb-6">
+          <div className="mb-6 mt-8">
           <h2 className="text-lg font-semibold mb-3">Outcomes and Adoption</h2>
           </div>
           
@@ -219,7 +221,7 @@ export default function Home() {
             />
           </div>
 
-          <div className="mb-6">
+          <div className="mb-6 mt-8">
           <h2 className="text-lg font-semibold mb-3">Timing and finance</h2>
           </div>
           <div>
@@ -281,6 +283,21 @@ export default function Home() {
             <p>Selected: {selectedFramework || "Nothing selected"}</p>
           </div> */}
   
+          </div>
+
+          {/* Results Column */}
+          <div className="w-full max-w-md bg-gray-50 p-6 rounded-lg">
+            <h2 className="text-2xl font-bold mb-4">Results</h2>
+            <div className="space-y-4">
+              <div className="p-3 bg-white rounded border">
+                <p className="text-sm text-gray-600">Calculations will appear here when you enter values</p>
+              </div>
+
+
+              
+            </div>
+          </div>
+
         </div>
 
       </main>
