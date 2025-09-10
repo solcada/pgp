@@ -190,21 +190,6 @@ Generated on: ${new Date().toLocaleDateString()}`;
               placeholder="Enter number of members"
             />
           </div>
-
-          <div className="mb-6">
-            <label className="block text-sm font-medium mb-2">
-              Enrollment rate in study from members in health plan (0-100%)
-            </label>
-            <input
-              type="number"
-              min="0"
-              max="100"
-              value={enrollmentRate}
-              onChange={(e) => setEnrollmentRate(e.target.value === '' ? '' : Number(e.target.value))}
-              className="w-full p-2 border rounded-md"
-              placeholder="Enter percentage (0-100)"
-            />
-          </div>
           </div>
 
           {/* Trial pricing and enrolment */}
@@ -332,10 +317,6 @@ Generated on: ${new Date().toLocaleDateString()}`;
             />
           </div>
 
-          {/* <div className="mt-4 p-2 bg-gray-100 rounded">
-            <p>Selected: {selectedFramework || "Nothing selected"}</p>
-          </div> */}
-  
           </div>
 
           {/* Results Column */}
@@ -352,6 +333,8 @@ Generated on: ${new Date().toLocaleDateString()}`;
             <div className="space-y-4">
               <div className="p-3 bg-white rounded border">
                 <p className="text-sm text-gray-600">Calculations will appear here when you enter values</p>
+
+                
 
               <p className="text-sm text-gray-600">In-Study Savings (during trial)
                     shows total and per-enrollee
