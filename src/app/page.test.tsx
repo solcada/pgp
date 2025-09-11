@@ -43,4 +43,20 @@ describe('Home Page', () => {
     // Verify it's empty
     expect(specialtyDrugInput.value).toBe('')
   })
+
+  it('displays the ROI value', async () => {
+    render(<Home />)
+
+    // Find the ROI label
+    const roiLabel = screen.getByText('ROI:')
+    expect(roiLabel).toBeInTheDocument()
+
+    // Find the ROI value span (next sibling)
+    const roiContainer = roiLabel.closest('div')
+    const roiValueSpan = roiContainer?.querySelector('.text-sm.font-medium') as HTMLSpanElement
+
+    // Verify the ROI value span exists and shows initial value
+    expect(roiValueSpan).toBeInTheDocument()
+    expect(roiValueSpan.textContent).toBe('0%')
+  })
 })
