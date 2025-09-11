@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { calculateSavings, SavingsCalculationParams } from "@/lib/savingsCalculator";
 
 const currencies = [
@@ -71,8 +71,30 @@ export default function Home() {
     }
   };
 
+  const [currency, setCurrency] = useState<string>("$");
+  const [costBasis, setCostBasis] = useState<string>("per-year");
+  const [specialtyCostBasis, setSpecialtyCostBasis] = useState<string>("per-year");
+  const [expensiveDrugCost, setExpensiveDrugCost] = useState<number | ''>('');
+  const [alternativeDrugCost, setAlternativeDrugCost] = useState<number | ''>('');
+  const [alternativeCostBasis, setAlternativeCostBasis] = useState<string>("per-year");
+  const [membersInHealthPlan, setMembersInHealthPlan] = useState<number | ''>('');
+  const [trialEnrollmentRate, setTrialEnrollmentRate] = useState<number | ''>('');
+  const [perEnrolleePriceToPayer, setPerEnrolleePriceToPayer] = useState<number | ''>('');
+  const [postTrialAdoption, setPostTrialAdoption] = useState<number | ''>('');
+  const [probabilityOfTrialSuccess, setProbabilityOfTrialSuccess] = useState<number | ''>('');
+  const [trialDuration, setTrialDuration] = useState<number | ''>('');
+  const [postTrialHorizon, setPostTrialHorizon] = useState<number | ''>('');
+  const [discountRateForNPV, setDiscountRateForNPV] = useState<number | ''>('');
+  const [optionalProgramFeeToPayer, setOptionalProgramFeeToPayer] = useState<number | ''>('');
+  const [inStudyTotalSavings, setInStudyTotalSavings] = useState<number | ''>('');
+  const [inStudyPerEnrolleeSavings, setInStudyPerEnrolleeSavings] = useState<number | ''>('');
+  const [expectedPostTrialSavings, setExpectedPostTrialSavings] = useState<number | ''>('');
+  const [totalSavings, setTotalSavings] = useState<number | ''>('');
+  const [savingsMultiple, setSavingsMultiple] = useState<number | ''>('');
+  const [roi, setRoi] = useState<number | ''>('');
+
   // Update calculations using the service
-  const updateCalculations = () => {
+  const updateCalculations = useCallback(() => {
     if (
       !expensiveDrugCost || 
       !alternativeDrugCost || 
@@ -110,33 +132,6 @@ export default function Home() {
       setRoi(result.roi);
       setSavingsMultiple(result.savingsMultiple);
     }
-  };
-
-  const [currency, setCurrency] = useState<string>("$");
-  const [costBasis, setCostBasis] = useState<string>("per-year");
-  const [specialtyCostBasis, setSpecialtyCostBasis] = useState<string>("per-year");
-  const [expensiveDrugCost, setExpensiveDrugCost] = useState<number | ''>('');
-  const [alternativeDrugCost, setAlternativeDrugCost] = useState<number | ''>('');
-  const [alternativeCostBasis, setAlternativeCostBasis] = useState<string>("per-year");
-  const [membersInHealthPlan, setMembersInHealthPlan] = useState<number | ''>('');
-  const [trialEnrollmentRate, setTrialEnrollmentRate] = useState<number | ''>('');
-  const [perEnrolleePriceToPayer, setPerEnrolleePriceToPayer] = useState<number | ''>('');
-  const [postTrialAdoption, setPostTrialAdoption] = useState<number | ''>('');
-  const [probabilityOfTrialSuccess, setProbabilityOfTrialSuccess] = useState<number | ''>('');
-  const [trialDuration, setTrialDuration] = useState<number | ''>('');
-  const [postTrialHorizon, setPostTrialHorizon] = useState<number | ''>('');
-  const [discountRateForNPV, setDiscountRateForNPV] = useState<number | ''>('');
-  const [optionalProgramFeeToPayer, setOptionalProgramFeeToPayer] = useState<number | ''>('');
-  const [inStudyTotalSavings, setInStudyTotalSavings] = useState<number | ''>('');
-  const [inStudyPerEnrolleeSavings, setInStudyPerEnrolleeSavings] = useState<number | ''>('');
-  const [expectedPostTrialSavings, setExpectedPostTrialSavings] = useState<number | ''>('');
-  const [totalSavings, setTotalSavings] = useState<number | ''>('');
-  const [savingsMultiple, setSavingsMultiple] = useState<number | ''>('');
-  const [roi, setRoi] = useState<number | ''>('');
-
-  // Trigger calculation whenever relevant values change
-  useEffect(() => {
-    updateCalculations();
   }, [
     expensiveDrugCost,
     alternativeDrugCost,
@@ -152,6 +147,11 @@ export default function Home() {
     discountRateForNPV,
     optionalProgramFeeToPayer
   ]);
+
+  // Trigger calculation whenever relevant values change
+  useEffect(() => {
+    updateCalculations();
+  }, [updateCalculations]);
 
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-4 pb-8 gap-8 sm:p-8">
