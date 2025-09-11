@@ -6,8 +6,9 @@ Say 100 patients taking the speciality drug pembrolizumab in the health plan, an
 
 During the trial, we would charge, say 80% of the annual cost of pembrolizumab (delete next field, for the enrollment rate because already inputted that). 
 
-Then on the results page, guaranteed cost-savings during the trial (assuming trial duration of 12 months) would be 20% of $100,000 x the number of patients in the trial (i.e. $20k x 10 or $200k). The amount paid to PGP would be 80% of $100k x 10 or $800k. So the ROI during trial would be 25% or 1.25 (= $200,000 ÷ $800,000 = 0.25 → 25% You can also express it as a benefit-cost ratio: $1,000,000 ÷ $800,000 = 1.25 (the plan avoids $1.25 of baseline cost for every $1 paid to PGP).
-
+Then on the results page, guaranteed cost-savings during the trial (assuming trial duration of 12 months) would be 20% of $100,000 x the number of patients in the trial (i.e. $20k x 10 or $200k). 
+The amount paid to PGP would be 80% of $100k x 10 or $800k. 
+So the ROI during trial would be 25% or 1.25 (= $200,000 ÷ $800,000 = 0.25 → 25% You can also express it as a benefit-cost ratio: $1,000,000 ÷ $800,000 = 1.25 (the plan avoids $1.25 of baseline cost for every $1 paid to PGP).
 So on the results page to the right, we should put total cost-savings from avoided utilization $200k and ROI of 1.25x
 
 Then for calculating ROI for post-trial adoption - if we set the slider at 70% this means that 70 patients from the 100 patients will take the low cost drug ($50k p/a), which generates cost savings of $3.5m (70 x $50k), so with the cost of the the trial being $800k ($80k x 10) this creates an ROI of 

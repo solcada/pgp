@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Working Directory
+
+**IMPORTANT**: Always run npm/bun commands from the `src/` directory, as this is where the main project's package.json is located. The root directory has a separate minimal package.json.
+
 ## Development Commands
 
 - **Development server**: `bun run dev` (uses --turbopack flag)

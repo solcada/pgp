@@ -1,0 +1,1 @@
+Claude needs to know about a working directory in Claude.md
