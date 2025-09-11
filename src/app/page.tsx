@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const currencies = [
   { value: "$", label: "USD ($)" },
@@ -70,6 +70,69 @@ export default function Home() {
     }
   };
 
+  // Calculate savings based on input values
+  const calculateSavings = () => {
+    // Only calculate if we have the minimum required values
+    if (
+      !expensiveDrugCost || 
+      !alternativeDrugCost || 
+      !membersInHealthPlan || 
+      !trialEnrollmentRate || 
+      !perEnrolleePriceToPayer || 
+      !trialDuration
+    ) {
+      return;
+    }
+
+    // Convert costs to annual basis for calculations
+    const annualExpensiveCost = specialtyCostBasis === 'per-month' ? expensiveDrugCost * 12 : expensiveDrugCost;
+    const annualAlternativeCost = alternativeCostBasis === 'per-month' ? alternativeDrugCost * 12 : alternativeDrugCost;
+    
+    // Calculate number of enrollees
+    const enrollees = (membersInHealthPlan * trialEnrollmentRate) / 100;
+    
+    // Calculate in-study savings
+    const costDifference = annualExpensiveCost - annualAlternativeCost;
+    const trialDurationYears = trialDuration / 12;
+    const inStudyTotal = enrollees * costDifference * trialDurationYears;
+    const inStudyPerEnrollee = costDifference * trialDurationYears;
+    
+    // Calculate post-trial savings (if applicable)
+    let postTrialSavings = 0;
+    if (postTrialHorizon && postTrialAdoption && probabilityOfTrialSuccess) {
+      const postTrialYears = postTrialHorizon / 12;
+      const adoptionRate = postTrialAdoption / 100;
+      const successProbability = probabilityOfTrialSuccess / 100;
+      
+      // Apply discount rate if provided
+      let discountFactor = 1;
+      if (discountRateForNPV) {
+        const discountRate = discountRateForNPV / 100;
+        discountFactor = 1 / Math.pow(1 + discountRate, postTrialYears);
+      }
+      
+      postTrialSavings = enrollees * costDifference * postTrialYears * adoptionRate * successProbability * discountFactor;
+    }
+    
+    // Calculate total savings
+    const totalSav = inStudyTotal + postTrialSavings;
+    
+    // Calculate investment (program fee if any)
+    const investment = optionalProgramFeeToPayer || 0;
+    
+    // Calculate ROI and savings multiple
+    const roiValue = investment > 0 ? ((totalSav - investment) / investment) * 100 : 0;
+    const savingsMultipleValue = investment > 0 ? totalSav / investment : 0;
+    
+    // Update state with calculated values
+    setInStudyTotalSavings(Math.round(inStudyTotal));
+    setInStudyPerEnrolleeSavings(Math.round(inStudyPerEnrollee));
+    setExpectedPostTrialSavings(Math.round(postTrialSavings));
+    setTotalSavings(Math.round(totalSav));
+    setRoi(Math.round(roiValue * 100) / 100); // Round to 2 decimal places
+    setSavingsMultiple(Math.round(savingsMultipleValue * 100) / 100); // Round to 2 decimal places
+  };
+
   const [currency, setCurrency] = useState<string>("$");
   const [costBasis, setCostBasis] = useState<string>("per-year");
   const [specialtyCostBasis, setSpecialtyCostBasis] = useState<string>("per-year");
@@ -77,7 +140,6 @@ export default function Home() {
   const [alternativeDrugCost, setAlternativeDrugCost] = useState<number | ''>('');
   const [alternativeCostBasis, setAlternativeCostBasis] = useState<string>("per-year");
   const [membersInHealthPlan, setMembersInHealthPlan] = useState<number | ''>('');
-  const [enrollmentRate, setEnrollmentRate] = useState<number | ''>('');
   const [trialEnrollmentRate, setTrialEnrollmentRate] = useState<number | ''>('');
   const [perEnrolleePriceToPayer, setPerEnrolleePriceToPayer] = useState<number | ''>('');
   const [postTrialAdoption, setPostTrialAdoption] = useState<number | ''>('');
@@ -92,6 +154,25 @@ export default function Home() {
   const [totalSavings, setTotalSavings] = useState<number | ''>('');
   const [savingsMultiple, setSavingsMultiple] = useState<number | ''>('');
   const [roi, setRoi] = useState<number | ''>('');
+
+  // Trigger calculation whenever relevant values change
+  useEffect(() => {
+    calculateSavings();
+  }, [
+    expensiveDrugCost,
+    alternativeDrugCost,
+    specialtyCostBasis,
+    alternativeCostBasis,
+    membersInHealthPlan,
+    trialEnrollmentRate,
+    perEnrolleePriceToPayer,
+    trialDuration,
+    postTrialHorizon,
+    postTrialAdoption,
+    probabilityOfTrialSuccess,
+    discountRateForNPV,
+    optionalProgramFeeToPayer
+  ]);
 
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-4 pb-8 gap-8 sm:p-8">
@@ -399,10 +480,6 @@ export default function Home() {
               <div className="mb-4">
                 <h3 className="font-semibold text-base mb-3">Key Drivers</h3>
                 <div className="space-y-1">
-                  <div className="flex justify-between">
-                    <span className="text-sm text-gray-600">Enrollment:</span>
-                    <span className="text-sm font-medium">{enrollmentRate || '0'}%</span>
-                  </div>
                   <div className="flex justify-between">
                     <span className="text-sm text-gray-600">Price during study:</span>
                     <span className="text-sm font-medium">{perEnrolleePriceToPayer || '0'}%</span>
