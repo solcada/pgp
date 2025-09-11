@@ -66,42 +66,6 @@ export default function Home() {
         
       } catch (error) {
         console.error('PDF generation failed:', error);
-        
-        // Fallback to text export with actual values
-        const content = `PUBLIC GOOD PHARMA CALCULATOR - RESULTS
-===========================================
-
-IN-STUDY SAVINGS
-- Total Savings: $${inStudyTotalSavings || '0'}
-- Per Enrollee: $${inStudyPerEnrolleeSavings || '0'}
-
-EXPECTED POST-TRIAL SAVINGS
-- Success-weighted over horizon: $${expectedPostTrialSavings || '0'}
-
-TOTAL SAVINGS
-- In-study + Post-trial: $${totalSavings || '0'}
-
-SAVINGS MULTIPLE / ROI
-- Savings Multiple: ${savingsMultiple || '0'}x
-- ROI: ${roi || '0'}%
-
-KEY DRIVERS
-- Enrollment: ${enrollmentRate || '0'}%
-- Price during study: ${perEnrolleePriceToPayer || '0'}%
-- Adoption: ${postTrialAdoption || '0'}%
-- Success: ${probabilityOfTrialSuccess || '0'}%
-
-Generated on: ${new Date().toLocaleDateString()}`;
-        
-        const blob = new Blob([content], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'pharma-calculator-results.txt';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
       }
     }
   };
