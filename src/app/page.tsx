@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { calculateSavings, SavingsCalculationParams } from "@/lib/savingsCalculator";
 
 const currencies = [
   { value: "$", label: "USD ($)" },
@@ -70,9 +71,8 @@ export default function Home() {
     }
   };
 
-  // Calculate savings based on input values
-  const calculateSavings = () => {
-    // Only calculate if we have the minimum required values
+  // Update calculations using the service
+  const updateCalculations = () => {
     if (
       !expensiveDrugCost || 
       !alternativeDrugCost || 
@@ -84,53 +84,32 @@ export default function Home() {
       return;
     }
 
-    // Convert costs to annual basis for calculations
-    const annualExpensiveCost = specialtyCostBasis === 'per-month' ? expensiveDrugCost * 12 : expensiveDrugCost;
-    const annualAlternativeCost = alternativeCostBasis === 'per-month' ? alternativeDrugCost * 12 : alternativeDrugCost;
+    const params: SavingsCalculationParams = {
+      expensiveDrugCost: expensiveDrugCost as number,
+      alternativeDrugCost: alternativeDrugCost as number,
+      specialtyCostBasis,
+      alternativeCostBasis,
+      membersInHealthPlan: membersInHealthPlan as number,
+      trialEnrollmentRate: trialEnrollmentRate as number,
+      perEnrolleePriceToPayer: perEnrolleePriceToPayer as number,
+      trialDuration: trialDuration as number,
+      postTrialHorizon: postTrialHorizon as number,
+      postTrialAdoption: postTrialAdoption as number,
+      probabilityOfTrialSuccess: probabilityOfTrialSuccess as number,
+      discountRateForNPV: discountRateForNPV as number,
+      optionalProgramFeeToPayer: optionalProgramFeeToPayer as number,
+    };
+
+    const result = calculateSavings(params);
     
-    // Calculate number of enrollees
-    const enrollees = (membersInHealthPlan * trialEnrollmentRate) / 100;
-    
-    // Calculate in-study savings
-    const costDifference = annualExpensiveCost - annualAlternativeCost;
-    const trialDurationYears = trialDuration / 12;
-    const inStudyTotal = enrollees * costDifference * trialDurationYears;
-    const inStudyPerEnrollee = costDifference * trialDurationYears;
-    
-    // Calculate post-trial savings (if applicable)
-    let postTrialSavings = 0;
-    if (postTrialHorizon && postTrialAdoption && probabilityOfTrialSuccess) {
-      const postTrialYears = postTrialHorizon / 12;
-      const adoptionRate = postTrialAdoption / 100;
-      const successProbability = probabilityOfTrialSuccess / 100;
-      
-      // Apply discount rate if provided
-      let discountFactor = 1;
-      if (discountRateForNPV) {
-        const discountRate = discountRateForNPV / 100;
-        discountFactor = 1 / Math.pow(1 + discountRate, postTrialYears);
-      }
-      
-      postTrialSavings = enrollees * costDifference * postTrialYears * adoptionRate * successProbability * discountFactor;
+    if (result) {
+      setInStudyTotalSavings(result.inStudyTotalSavings);
+      setInStudyPerEnrolleeSavings(result.inStudyPerEnrolleeSavings);
+      setExpectedPostTrialSavings(result.expectedPostTrialSavings);
+      setTotalSavings(result.totalSavings);
+      setRoi(result.roi);
+      setSavingsMultiple(result.savingsMultiple);
     }
-    
-    // Calculate total savings
-    const totalSav = inStudyTotal + postTrialSavings;
-    
-    // Calculate investment (program fee if any)
-    const investment = optionalProgramFeeToPayer || 0;
-    
-    // Calculate ROI and savings multiple
-    const roiValue = investment > 0 ? ((totalSav - investment) / investment) * 100 : 0;
-    const savingsMultipleValue = investment > 0 ? totalSav / investment : 0;
-    
-    // Update state with calculated values
-    setInStudyTotalSavings(Math.round(inStudyTotal));
-    setInStudyPerEnrolleeSavings(Math.round(inStudyPerEnrollee));
-    setExpectedPostTrialSavings(Math.round(postTrialSavings));
-    setTotalSavings(Math.round(totalSav));
-    setRoi(Math.round(roiValue * 100) / 100); // Round to 2 decimal places
-    setSavingsMultiple(Math.round(savingsMultipleValue * 100) / 100); // Round to 2 decimal places
   };
 
   const [currency, setCurrency] = useState<string>("$");
@@ -157,7 +136,7 @@ export default function Home() {
 
   // Trigger calculation whenever relevant values change
   useEffect(() => {
-    calculateSavings();
+    updateCalculations();
   }, [
     expensiveDrugCost,
     alternativeDrugCost,
